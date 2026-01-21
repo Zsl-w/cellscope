@@ -3,13 +3,14 @@ import { LoginRequest, RegisterRequest, AuthResponse, User } from '../types'
 
 export const authService = {
   login: async (data: LoginRequest): Promise<AuthResponse> => {
-    const formData = new FormData()
-    formData.append('username', data.email)
-    formData.append('password', data.password)
-    
-    const response = await api.post<AuthResponse>('/auth/token', formData, {
+    // 使用 URLSearchParams 发送 application/x-www-form-urlencoded 格式
+    const params = new URLSearchParams()
+    params.append('username', data.email)
+    params.append('password', data.password)
+
+    const response = await api.post<AuthResponse>('/auth/token', params, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
     })
     return response.data
